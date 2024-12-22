@@ -17,6 +17,10 @@ export const Scanner = () => {
     const codeReader = new BrowserMultiFormatReader();
     
     try {
+      if (!videoRef.current) {
+        throw new Error('Видео элемент не найден');
+      }
+      
       const videoInputDevices = await codeReader.listVideoInputDevices();
       
       if (!videoInputDevices?.length) {
@@ -27,7 +31,7 @@ export const Scanner = () => {
 
       await codeReader.decodeFromVideoDevice(
         null,
-        videoRef.current!,
+        videoRef.current || null,
         (result) => {
           if (result) {
             // Динамическое создание полей на основе типа кода

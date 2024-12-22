@@ -17,7 +17,7 @@ export const ScanForm = () => {
   const { currentScan } = useAppSelector((state) => state.scan);
 
   const createValidationSchema = () => {
-    const schema: Record<string, any> = {};
+    const schema: Record<string, z.ZodTypeAny> = {};
     
     currentScan?.fields.forEach((field) => {
       let fieldSchema = z.string();
@@ -59,7 +59,7 @@ export const ScanForm = () => {
       <CardHeader>
         <h2 className="text-xl font-semibold">Результат сканирования</h2>
         <p className="text-sm text-muted-foreground">
-          Код: {currentScan.code}
+          Ко��: {currentScan.code}
         </p>
       </CardHeader>
       <CardContent>
