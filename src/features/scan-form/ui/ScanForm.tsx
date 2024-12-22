@@ -59,7 +59,7 @@ export const ScanForm = () => {
       <CardHeader>
         <h2 className="text-xl font-semibold">Результат сканирования</h2>
         <p className="text-sm text-muted-foreground">
-          Ко��: {currentScan.code}
+          Код: {currentScan.code}
         </p>
       </CardHeader>
       <CardContent>
