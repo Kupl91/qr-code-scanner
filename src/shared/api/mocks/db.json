@@ -1,0 +1,241 @@
+{
+  "boxes": [
+    {
+      "id": "BOX001",
+      "productType": "Компьютер",
+      "components": [
+        "Монитор Dell P2419H",
+        "Клавиатура Logitech K120",
+        "Мышь Logitech M185",
+        "Системный блок Dell OptiPlex",
+        "Кабель питания",
+        "DisplayPort кабель"
+      ],
+      "serialNumber": "SN123456",
+      "location": "Склад A1",
+      "status": "На складе",
+      "fields": [
+        {
+          "id": "productName",
+          "label": "Наименование",
+          "type": "text",
+          "value": "Dell OptiPlex 7090",
+          "required": true
+        },
+        {
+          "id": "serialNumber",
+          "label": "Серийный номер",
+          "type": "text",
+          "value": "SN123456",
+          "required": true
+        },
+        {
+          "id": "location",
+          "label": "Местоположение",
+          "type": "text",
+          "value": "A1",
+          "options": [
+            {
+              "label": "Склад A1",
+              "value": "A1"
+            },
+            {
+              "label": "Склад B1",
+              "value": "B1"
+            }
+          ],
+          "required": true
+        },
+        {
+          "id": "warranty",
+          "label": "Гарантия до",
+          "type": "text",
+          "value": "2025-12-29",
+          "required": true
+        },
+        {
+          "id": "components",
+          "label": "Комплектация",
+          "type": "text",
+          "value": "Монитор Dell P2419H\nКлавиатура Logitech K120\nМышь Logitech M185\nСистемный блок Dell OptiPlex\nКабель питания\nDisplayPort кабел",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "BOX002",
+      "productType": "Сетевое оборудование",
+      "components": [
+        "Коммутатор Cisco Catalyst 2960",
+        "Блок питания",
+        "Консольный кабель"
+      ],
+      "serialNumber": "SN789012",
+      "location": "Склад B1",
+      "status": "В обработке",
+      "fields": [
+        {
+          "id": "productName",
+          "label": "Наименование",
+          "type": "str",
+          "value": "Cisco Switch",
+          "required": true
+        },
+        {
+          "id": "ipAddress",
+          "label": "IP адрес",
+          "type": "str",
+          "value": "192.168.1.1",
+          "required": true
+        },
+        {
+          "id": "ports",
+          "label": "Количество портов",
+          "type": "number",
+          "value": "24",
+          "required": true
+        }
+      ]
+    },
+    {
+      "id": "BOX003",
+      "productType": "Серверное оборудование",
+      "components": [
+        "Сервер Dell PowerEdge R740",
+        "RAID-контроллер",
+        "Блоки питания (2шт)",
+        "Салазки для монтажа",
+        "Комплект кабелей",
+        "Направляющие",
+        "Документация",
+        "USB-накопитель с драйверами"
+      ],
+      "serialNumber": "SN345678",
+      "location": "Склад A1",
+      "status": "На складе",
+      "fields": [
+        {
+          "id": "productName",
+          "label": "Наименование",
+          "type": "text",
+          "value": "Dell PowerEdge",
+          "required": true
+        },
+        {
+          "id": "rackUnit",
+          "label": "Высота (U)",
+          "type": "number",
+          "value": "2",
+          "required": true
+        },
+        {
+          "id": "ram",
+          "label": "Оперативная память (GB)",
+          "type": "number",
+          "value": "128",
+          "required": true
+        },
+        {
+          "id": "cpuCores",
+          "label": "Количество ядер",
+          "type": "number",
+          "value": "32",
+          "required": true
+        },
+        {
+          "id": "storage",
+          "label": "Объём хранилища (TB)",
+          "type": "number",
+          "value": "24",
+          "required": true
+        },
+        {
+          "id": "components",
+          "label": "Комплектация",
+          "type": "text",
+          "value": "Сервер Dell PowerEdge R740\nRAID-контроллер\nБлоки питания (2шт)\nСалазки для монтажа\nКомплект кабелей\nНаправляющие\nДокументация\nUSB-накопитель с драйверам",
+          "required": false
+        }
+      ]
+    },
+    {
+      "id": "BOX004",
+      "productType": "Система хранения данных",
+      "components": [
+        "Дисковый массив NetApp FAS2750",
+        "Контроллеры хранения (2шт)",
+        "Блоки питания (2шт)",
+        "Жесткие диски 10TB (12шт)",
+        "Рельсы для монтажа"
+      ],
+      "serialNumber": "SN901234",
+      "location": "Склад A1",
+      "status": "На складе",
+      "fields": [
+        {
+          "id": "productName",
+          "label": "Наименование",
+          "type": "text",
+          "value": "NetApp FAS",
+          "required": true
+        },
+        {
+          "id": "capacity",
+          "label": "Ёмкость (TB)",
+          "type": "number",
+          "value": "100",
+          "required": true
+        },
+        {
+          "id": "raidLevel",
+          "label": "Уровень RAID",
+          "type": "text",
+          "value": "RAID6",
+          "options": [
+            {
+              "label": "RAID5",
+              "value": "RAID5"
+            },
+            {
+              "label": "RAID6",
+              "value": "RAID6"
+            },
+            {
+              "label": "RAID10",
+              "value": "RAID10"
+            }
+          ],
+          "required": true
+        },
+        {
+          "id": "diskType",
+          "label": "Тип дисков",
+          "type": "text",
+          "value": "SSD",
+          "options": [
+            {
+              "label": "SSD",
+              "value": "SSD"
+            },
+            {
+              "label": "HDD",
+              "value": "HDD"
+            },
+            {
+              "label": "Гибрид",
+              "value": "HYBRID"
+            }
+          ],
+          "required": true
+        },
+        {
+          "id": "components",
+          "label": "Комплектация",
+          "type": "text",
+          "value": "Дисковый массив NetApp FAS2750\nКонтроллеры хранения (2шт)\nБлоки питания (2шт)\nЖесткие диски 10TB (11шт)\nРельсы для монтажа",
+          "required": false
+        }
+      ]
+    }
+  ]
+}

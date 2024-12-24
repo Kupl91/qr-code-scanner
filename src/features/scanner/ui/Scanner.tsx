@@ -1,78 +1,79 @@
 "use client";
 
-import { useCallback, useEffect, useRef } from 'react';
-import { BrowserMultiFormatReader } from '@zxing/library';
-import { useAppDispatch, useAppSelector } from '@/shared/lib/hooks';
-import { setScanResult, setError, startScanning } from '@/entities/scan/model/scanSlice';
+import { useCallback, useRef } from 'react';
+import { useAppDispatch } from '@/shared/lib/hooks';
+import { setScanResult, setError } from '@/entities/scan/model/scanSlice';
 import { Button } from '@/shared/ui/button';
-import { generateFieldsBasedOnCode } from '@/entities/scan/lib/generateFields';
-import { ScanResult } from '@/entities/scan/model/types';
+import { boxApi } from '@/shared/api/box';
+import { useToast } from '@/shared/ui/use-toast';
+import { BoxField } from '@/shared/api/types/box';
+import { ScanField } from '@/entities/scan/model/types';
+
+const mapBoxFieldToScanField = (field: BoxField): ScanField => ({
+  ...field,
+  value: String(field.value),
+  type: field.type === 'str' || field.type === 'select' || field.type === 'textarea' ? 'text' : field.type === 'number' ? 'number' : 'date'
+});
 
 export const Scanner = () => {
-  const videoRef = useRef<HTMLVideoElement>(null);
   const dispatch = useAppDispatch();
-  const { error } = useAppSelector((state) => state.scan);
+  const { toast } = useToast();
+  const lastScannedId = useRef<string | null>(null);
 
   const handleScan = useCallback(async () => {
-    const codeReader = new BrowserMultiFormatReader();
-    
     try {
-      if (!videoRef.current) {
-        throw new Error('Видео элемент не найден');
-      }
+      const boxIds = ['BOX001', 'BOX002', 'BOX003', 'BOX004'];
+      let randomId;
       
-      const videoInputDevices = await codeReader.listVideoInputDevices();
+      // Исключаем последний отсканированный ID
+      do {
+        randomId = boxIds[Math.floor(Math.random() * boxIds.length)];
+      } while (randomId === lastScannedId.current && boxIds.length > 1);
       
-      if (!videoInputDevices?.length) {
-        throw new Error('Камера не найдена');
+      lastScannedId.current = randomId;
+      
+      const scanResult = await boxApi.scanBox(randomId);
+      
+      if (!scanResult.success) {
+        throw new Error(scanResult.error);
       }
 
-      dispatch(startScanning());
+      // Добавляем поле components к полям формы
+      const componentsField: BoxField = {
+        id: 'components',
+        label: 'Комплектация',
+        type: 'textarea',
+        value: scanResult.data!.components.join('\n'),
+        required: false
+      };
 
-      await codeReader.decodeFromVideoDevice(
-        null,
-        videoRef.current || null,
-        (result) => {
-          if (result) {
-            // Динамическое создание полей на основе типа кода
-            const scanResult: ScanResult = {
-              id: Date.now().toString(),
-              code: result.getText(),
-              type: result.getBarcodeFormat().toString().includes('QR') ? 'qr' : 'barcode',
-              timestamp: Date.now(),
-              fields: generateFieldsBasedOnCode(result.getText(), result.getBarcodeFormat().toString()),
-            };
-            
-            dispatch(setScanResult(scanResult));
-            codeReader.reset();
-          }
-        }
-      );
+      dispatch(setScanResult({
+        id: scanResult.data!.id,
+        code: scanResult.data!.id,
+        type: 'barcode',
+        timestamp: Date.now(),
+        fields: [...scanResult.data!.fields.map(mapBoxFieldToScanField), mapBoxFieldToScanField(componentsField)]
+      }));
+
+      toast({
+        title: "Успешно",
+        description: `Отсканирован ${scanResult.data!.productType}`
+      });
     } catch (error) {
       dispatch(setError(error instanceof Error ? error.message : 'Произошла ошибка при сканировании'));
+      toast({
+        variant: "destructive",
+        title: "Ошибка",
+        description: error instanceof Error ? error.message : 'Произошла ошибка при сканировании'
+      });
     }
-  }, [dispatch]);
-
-  useEffect(() => {
-    const codeReader = new BrowserMultiFormatReader();
-    
-    return () => {
-      codeReader.reset();
-    };
-  }, []);
+  }, [dispatch, toast]);
 
   return (
-    <div className="flex flex-col items-center gap-4">
-      {error && (
-        <p className="text-destructive text-sm">{error}</p>
-      )}
-      <Button onClick={handleScan}>
-        Начать сканирование
+    <div className="flex flex-col items-center justify-center min-h-[60vh]">
+      <Button onClick={handleScan} size="lg" className="px-8 py-6 text-lg">
+        Сканировать коробку
       </Button>
-      <video
-        ref={videoRef}
-        className="w-full max-w-md aspect-video"
-      />
     </div>
   );
 }; 
